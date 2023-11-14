@@ -1,0 +1,1 @@
+api_gateway_url = "https://7fcx7ig8fa.execute-api.us-east-2.amazonaws.com/doorsv2/door"
