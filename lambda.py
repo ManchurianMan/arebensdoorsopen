@@ -1,3 +1,4 @@
+import json
 import requests
 
 # Defining hardcoded variables:
@@ -5,7 +6,7 @@ access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmMDY0NTZhNjY1YzE
 nabuCasaApiUrl="https://gzin1lgtcbl5sn9776jejbqgbum6ds2f.ui.nabu.casa/api/states/"
 stair_door = "binary_sensor.stair_door_opening"
 # barn_door = "binary_sensor.barn_door_opening"
-
+sensor_urls = [stair_door]
 def fetch_sensor_data(sensor_url, access_token=access_token):
     try:
         response = requests.get(nabuCasaApiUrl + sensor_url, headers={
@@ -17,19 +18,36 @@ def fetch_sensor_data(sensor_url, access_token=access_token):
     except requests.RequestException as e:
         print(f"There was a problem fetching the sensor data: {e}")
 
-# Example usage
-def door_open_test(sensor_url=list, access_token=access_token):
+def door_open_test(sensor_urls=sensor_urls, access_token=access_token):
     states = []
-    for item in sensor_url:
+    for item in sensor_urls:
         data = fetch_sensor_data(item, access_token)
-        state = data['state']
-        states.append(state)
+        if data:
+            state = data.get('state')
+            states.append(state)
 
     if all(state == 'on' for state in states):
-        return 'YES'
+        message = 'YES'
     elif any(state == 'off' for state in states):
-        return 'NO, AT LEAST ONE IS CLOSED'
+        message = 'NO, AT LEAST ONE IS CLOSED'
     else:
-        return 'NO, THEY ARE BOTH CLOSED'
-    
-print(door_open_test([stair_door], access_token))
+        message = 'NO, THEY ARE BOTH CLOSED'
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps({'message': message}),
+        'headers': {
+            'Content-Type': 'application/json'
+        }
+    }
+
+# Lambda handler function
+def lambda_handler(event, context):
+    # Extract parameters from the event, if necessary
+    # For example, if using query parameters:
+    # sensor_urls = event['queryStringParameters']['sensor_urls'].split(',')
+
+    # Call your function
+    response = door_open_test()
+
+    return response
