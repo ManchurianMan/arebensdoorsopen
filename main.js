@@ -1,5 +1,7 @@
 accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmMDY0NTZhNjY1YzE0ZDUxOTI0MDVlOWFiNWI2Y2RmMCIsImlhdCI6MTY5OTk2ODUwNCwiZXhwIjoyMDE1MzI4NTA0fQ.khiLbCiMJIzQ9l-cR0Rjha4uKye5aJs3FtGc9lv6xIg"
 
+nabuCasaUrl="https://gzin1lgtcbl5sn9776jejbqgbum6ds2f.ui.nabu.casa/lovelace/0"
+
 async function fetchSensorData(sensorUrl) {
     try {
         const response = await fetch(sensorUrl);
