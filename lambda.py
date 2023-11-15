@@ -4,9 +4,9 @@ import requests
 # Defining hardcoded variables:
 access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmMDY0NTZhNjY1YzE0ZDUxOTI0MDVlOWFiNWI2Y2RmMCIsImlhdCI6MTY5OTk2ODUwNCwiZXhwIjoyMDE1MzI4NTA0fQ.khiLbCiMJIzQ9l-cR0Rjha4uKye5aJs3FtGc9lv6xIg"
 nabuCasaApiUrl="https://gzin1lgtcbl5sn9776jejbqgbum6ds2f.ui.nabu.casa/api/states/"
-stair_door = "binary_sensor.stair_door_opening"
-# barn_door = "binary_sensor.barn_door_opening"
-sensor_urls = [stair_door]
+stair_door = "binary_sensor.stair_door_contact"
+barn_door = "binary_sensor.barn_door_contact"
+sensor_urls = [stair_door, barn_door]
 def fetch_sensor_data(sensor_url, access_token=access_token):
     try:
         response = requests.get(nabuCasaApiUrl + sensor_url, headers={
@@ -28,10 +28,10 @@ def door_open_test(sensor_urls=sensor_urls, access_token=access_token):
 
     if all(state == 'on' for state in states):
         message = 'YES'
-    elif any(state == 'off' for state in states):
-        message = 'NO, AT LEAST ONE IS CLOSED'
-    else:
+    elif all(state == 'off' for state in states):
         message = 'NO, THEY ARE BOTH CLOSED'
+    else:
+        message = 'NO, AT LEAST ONE IS CLOSED'
 
     return {
         'statusCode': 200,
@@ -51,3 +51,5 @@ def lambda_handler(event, context):
     response = door_open_test()
 
     return response
+
+print(door_open_test())
