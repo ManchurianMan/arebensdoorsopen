@@ -2,5 +2,4 @@
 *.zip
 *.tfstate
 *.backup
-*.hcl
 .env

@@ -1,0 +1,65 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_apigatewayv2_api.are_bens_doors_open (expand)" [label = "aws_apigatewayv2_api.are_bens_doors_open", shape = "box"]
+		"[root] aws_apigatewayv2_deployment.example_deployment (expand)" [label = "aws_apigatewayv2_deployment.example_deployment", shape = "box"]
+		"[root] aws_apigatewayv2_integration.lambda_integration (expand)" [label = "aws_apigatewayv2_integration.lambda_integration", shape = "box"]
+		"[root] aws_apigatewayv2_route.example_route (expand)" [label = "aws_apigatewayv2_route.example_route", shape = "box"]
+		"[root] aws_apigatewayv2_stage.example_stage (expand)" [label = "aws_apigatewayv2_stage.example_stage", shape = "box"]
+		"[root] aws_cloudfront_distribution.distribution (expand)" [label = "aws_cloudfront_distribution.distribution", shape = "box"]
+		"[root] aws_iam_role.iam_for_lambda (expand)" [label = "aws_iam_role.iam_for_lambda", shape = "box"]
+		"[root] aws_lambda_function.door_lambda (expand)" [label = "aws_lambda_function.door_lambda", shape = "box"]
+		"[root] aws_lambda_permission.api_gw_lambda (expand)" [label = "aws_lambda_permission.api_gw_lambda", shape = "box"]
+		"[root] aws_s3_bucket.bucket (expand)" [label = "aws_s3_bucket.bucket", shape = "box"]
+		"[root] aws_s3_bucket_policy.bucket_policy (expand)" [label = "aws_s3_bucket_policy.bucket_policy", shape = "box"]
+		"[root] aws_s3_bucket_website_configuration.hosting (expand)" [label = "aws_s3_bucket_website_configuration.hosting", shape = "box"]
+		"[root] aws_s3_object.file (expand)" [label = "aws_s3_object.file", shape = "box"]
+		"[root] data.archive_file.lambda (expand)" [label = "data.archive_file.lambda", shape = "box"]
+		"[root] data.aws_iam_policy_document.assume_role (expand)" [label = "data.aws_iam_policy_document.assume_role", shape = "box"]
+		"[root] provider[\"registry.terraform.io/hashicorp/archive\"]" [label = "provider[\"registry.terraform.io/hashicorp/archive\"]", shape = "diamond"]
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"]" [label = "provider[\"registry.terraform.io/hashicorp/aws\"]", shape = "diamond"]
+		"[root] var.account_id" [label = "var.account_id", shape = "note"]
+		"[root] var.region" [label = "var.region", shape = "note"]
+		"[root] var.route" [label = "var.route", shape = "note"]
+		"[root] aws_apigatewayv2_api.are_bens_doors_open (expand)" -> "[root] provider[\"registry.terraform.io/hashicorp/aws\"]"
+		"[root] aws_apigatewayv2_deployment.example_deployment (expand)" -> "[root] aws_apigatewayv2_route.example_route (expand)"
+		"[root] aws_apigatewayv2_integration.lambda_integration (expand)" -> "[root] aws_apigatewayv2_api.are_bens_doors_open (expand)"
+		"[root] aws_apigatewayv2_integration.lambda_integration (expand)" -> "[root] aws_lambda_function.door_lambda (expand)"
+		"[root] aws_apigatewayv2_route.example_route (expand)" -> "[root] aws_apigatewayv2_integration.lambda_integration (expand)"
+		"[root] aws_apigatewayv2_route.example_route (expand)" -> "[root] var.route"
+		"[root] aws_apigatewayv2_stage.example_stage (expand)" -> "[root] aws_apigatewayv2_api.are_bens_doors_open (expand)"
+		"[root] aws_cloudfront_distribution.distribution (expand)" -> "[root] aws_s3_bucket_website_configuration.hosting (expand)"
+		"[root] aws_iam_role.iam_for_lambda (expand)" -> "[root] data.aws_iam_policy_document.assume_role (expand)"
+		"[root] aws_lambda_function.door_lambda (expand)" -> "[root] aws_iam_role.iam_for_lambda (expand)"
+		"[root] aws_lambda_function.door_lambda (expand)" -> "[root] data.archive_file.lambda (expand)"
+		"[root] aws_lambda_permission.api_gw_lambda (expand)" -> "[root] aws_apigatewayv2_api.are_bens_doors_open (expand)"
+		"[root] aws_lambda_permission.api_gw_lambda (expand)" -> "[root] aws_lambda_function.door_lambda (expand)"
+		"[root] aws_lambda_permission.api_gw_lambda (expand)" -> "[root] var.account_id"
+		"[root] aws_lambda_permission.api_gw_lambda (expand)" -> "[root] var.region"
+		"[root] aws_s3_bucket.bucket (expand)" -> "[root] provider[\"registry.terraform.io/hashicorp/aws\"]"
+		"[root] aws_s3_bucket_policy.bucket_policy (expand)" -> "[root] aws_s3_bucket.bucket (expand)"
+		"[root] aws_s3_bucket_website_configuration.hosting (expand)" -> "[root] aws_s3_bucket.bucket (expand)"
+		"[root] aws_s3_object.file (expand)" -> "[root] aws_s3_bucket.bucket (expand)"
+		"[root] aws_s3_object.file (expand)" -> "[root] local.content_types (expand)"
+		"[root] data.archive_file.lambda (expand)" -> "[root] provider[\"registry.terraform.io/hashicorp/archive\"]"
+		"[root] data.aws_iam_policy_document.assume_role (expand)" -> "[root] provider[\"registry.terraform.io/hashicorp/aws\"]"
+		"[root] output.api_gateway_url (expand)" -> "[root] aws_apigatewayv2_stage.example_stage (expand)"
+		"[root] output.api_gateway_url (expand)" -> "[root] var.route"
+		"[root] output.s3_url (expand)" -> "[root] aws_s3_bucket_website_configuration.hosting (expand)"
+		"[root] output.website_url (expand)" -> "[root] aws_cloudfront_distribution.distribution (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/archive\"] (close)" -> "[root] data.archive_file.lambda (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_apigatewayv2_deployment.example_deployment (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_apigatewayv2_stage.example_stage (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_cloudfront_distribution.distribution (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_lambda_permission.api_gw_lambda (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_s3_bucket_policy.bucket_policy (expand)"
+		"[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)" -> "[root] aws_s3_object.file (expand)"
+		"[root] root" -> "[root] output.api_gateway_url (expand)"
+		"[root] root" -> "[root] output.s3_url (expand)"
+		"[root] root" -> "[root] output.website_url (expand)"
+		"[root] root" -> "[root] provider[\"registry.terraform.io/hashicorp/archive\"] (close)"
+		"[root] root" -> "[root] provider[\"registry.terraform.io/hashicorp/aws\"] (close)"
+	}
+}
+
