@@ -123,6 +123,11 @@ resource "aws_apigatewayv2_stage" "example_stage" {
   api_id      = aws_apigatewayv2_api.are_bens_doors_open.id
   name        = "doorsv2"
   auto_deploy = true
+  default_route_settings {
+    
+  throttling_burst_limit = 20
+  throttling_rate_limit = 10
+  }
 }
 
 resource "aws_apigatewayv2_deployment" "example_deployment" {
