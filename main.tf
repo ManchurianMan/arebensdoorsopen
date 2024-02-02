@@ -238,3 +238,13 @@ resource "aws_cloudfront_distribution" "distribution" {
     target_origin_id       = aws_s3_bucket.bucket.bucket_regional_domain_name
   }
 }
+
+#### TF CLOUD ####
+terraform {
+  cloud {
+    organization = "brokenshadows"
+    workspaces {
+      name = "arebensdoorsopen"
+    }
+  }
+}
