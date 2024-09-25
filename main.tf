@@ -26,6 +26,16 @@ variable "route" {
   default     = "door"
 }
 
+variable "access_token" {
+  description = "Access token for authentication"
+  type        = string
+}
+
+variable "nabuCasaApiUrl" {
+  description = "NabuCasa API URL"
+  type        = string
+}
+
 #################
 # IAM FOR LAMBDA #
 #################
@@ -72,7 +82,9 @@ resource "aws_lambda_function" "door_lambda" {
 
   environment {
     variables = {
-      foo = "bar"
+      foo = "bar",
+      access_token = var.access_token,
+      nabuCasaApiUrl = var.nabuCasaApiUrl #"https://api.nabu.casa"
     }
   }
 }
@@ -224,5 +236,15 @@ resource "aws_cloudfront_distribution" "distribution" {
     allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = aws_s3_bucket.bucket.bucket_regional_domain_name
+  }
+}
+
+#### TF CLOUD ####
+terraform {
+  cloud {
+    organization = "brokenshadows"
+    workspaces {
+      name = "arebensdoorsopen"
+    }
   }
 }
